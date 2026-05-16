@@ -1,14 +1,23 @@
 const model = require('../models/model');
+const jwt = require('jsonwebtoken');
+const rahasia = process.env.JWT_SECRET || 'rahasia-happy-donut';
 
-// Mengambil semua produk untuk ditampilkan ke pengunjung [cite: 755]
+// Tampilkan katalog & Fitur Pencarian
 const tampilkanKatalog = async (req, res) => {
-    const { data, error } = await model.getAllKatalog();
+    const { cari } = req.query; // Menangkap kata kunci dari URL (?cari=donat)
     
+    if (cari) {
+        const { data, error } = await model.cariKatalog(cari);
+        if (error) return res.status(500).json({ message: "Gagal mencari data", error });
+        return res.status(200).json(data);
+    }
+
+    const { data, error } = await model.getAllKatalog();
     if (error) return res.status(500).json({ message: "Gagal mengambil data", error });
     res.status(200).json(data);
 };
 
-// Admin mengupdate stok 
+// Ubah Stok (Sudah diamankan Middleware nanti di server.js)
 const ubahStok = async (req, res) => {
     const { id } = req.params;
     const { stok } = req.body;
@@ -19,16 +28,23 @@ const ubahStok = async (req, res) => {
     res.status(200).json({ message: "Stok berhasil diupdate", data });
 };
 
-// Proses Login Admin [cite: 648-650]
+// Proses Login Admin
 const prosesLogin = async (req, res) => {
     const { username, password } = req.body;
     const { data, error } = await model.loginAdmin(username, password);
 
     if (error || !data) {
-        return res.status(401).json({ message: "Kredensial Salah" }); // Sesuai Sequence Diagram [cite: 643]
+        return res.status(401).json({ message: "Username atau Password Salah!" });
     }
     
-    res.status(200).json({ message: "Login Berhasil", admin: data });
+    // Buat token khusus untuk admin ini yang berlaku 24 jam
+    const token = jwt.sign({ id: data.id_admin, username: data.username }, rahasia, { expiresIn: '24h' });
+    
+    res.status(200).json({ 
+        message: "Login Berhasil", 
+        token: token, 
+        admin: { id: data.id_admin, username: data.username } 
+    });
 };
 
 module.exports = {
