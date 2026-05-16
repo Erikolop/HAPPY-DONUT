@@ -1,0 +1,32 @@
+.category-tabs {
+  display: flex;
+  gap: 10px;
+  padding: 18px 16px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.category-tab {
+  padding: 8px 22px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary-light);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.category-tab:hover {
+  background-color: #f8d3dc;
+}
+
+.category-tab.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(165, 37, 69, 0.25);
+}
