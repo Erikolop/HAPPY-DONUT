@@ -1,0 +1,115 @@
+.product-card {
+  background-color: var(--color-card);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(165, 37, 69, 0.12);
+}
+
+.product-card.is-empty {
+  opacity: 0.78;
+}
+
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #ececec;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card.is-empty .product-image {
+  filter: grayscale(0.6) brightness(0.85);
+}
+
+.product-badge-habis {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(60, 60, 60, 0.92);
+  color: #ffffff;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.product-info {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.25;
+}
+
+.product-card.is-empty .product-name {
+  color: #999;
+}
+
+.product-description {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.product-stock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.product-stock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.product-stock--high .product-stock-dot {
+  background-color: var(--color-success);
+}
+
+.product-stock--low .product-stock-dot {
+  background-color: var(--color-warning);
+}
+
+.product-stock--empty .product-stock-dot {
+  background-color: var(--color-danger);
+}
+
+.product-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-top: 2px;
+  letter-spacing: -0.3px;
+}
+
+.product-card.is-empty .product-price {
+  color: #b5b5b5;
+}
