@@ -1,7 +1,7 @@
 import { formatPrice, getStockStatus } from '../data/products';
 import './ProductCard.css';
 
-function ProductCard({ product }) {
+function ProductCard({ product, onClick }) {
   const name  = product.nama_katalog ?? product.name ?? '';
   const desc  = product.deskripsi ?? product.description ?? '';
   const price = product.harga ?? product.price ?? 0;
@@ -12,7 +12,13 @@ function ProductCard({ product }) {
   const isEmpty = status.level === 'empty';
 
   return (
-    <article className={`product-card ${isEmpty ? 'is-empty' : ''}`}>
+    <article
+      className={`product-card ${isEmpty ? 'is-empty' : ''}`}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
+    >
       <div className="product-image-wrapper">
         <img
           src={image}

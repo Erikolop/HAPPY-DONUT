@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import CategoryTabs from '../components/CategoryTabs';
 import ProductCard from '../components/ProductCard';
+import ProductModal from '../components/ProductModal';
 import { fetchKatalog } from '../services/api';
 import { CATEGORIES } from '../data/products';
 import './Home.css';
@@ -11,6 +12,7 @@ function Home({ initialCategory = 'All' }) {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -41,6 +43,12 @@ function Home({ initialCategory = 'All' }) {
 
   return (
     <div className="home">
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
       <Navbar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <CategoryTabs
         categories={CATEGORIES}
@@ -60,7 +68,11 @@ function Home({ initialCategory = 'All' }) {
         ) : (
           <div className="product-grid">
             {filtered.map((p) => (
-              <ProductCard key={p.id_katalog ?? p.id} product={p} />
+              <ProductCard
+                key={p.id_katalog ?? p.id}
+                product={p}
+                onClick={() => setSelectedProduct(p)}
+              />
             ))}
           </div>
         )}
